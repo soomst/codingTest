@@ -1,5 +1,7 @@
 function solution(s) {
-    let answer = 0;
+    let answer = 1000;
+    
+    if (s.length === 1) return 1;
     
     for (let i=1; i <= s.length/2; i++) {
         let before = ''
@@ -8,16 +10,16 @@ function solution(s) {
         
         for (let j=0; j < s.length; j+=i) {
             let endPoint = (j+i) >= s.length
-            let present  = endPoint ? s.substring(j, s.length) : s.substr(j, i)
+            let present  = s.slice(j, j + i)
             before       = before || present
             
             if (before === present) {
                 matchCnt++
             } else {
                 if (matchCnt > 1) {
-                    compressStr = compressStr + matchCnt + '' + before    
+                    compressStr += `${matchCnt}${before}`    
                 } else {
-                    compressStr = compressStr + before    
+                    compressStr += `${before}`    
                 }
                 matchCnt = 1
                 before   = present
@@ -25,12 +27,12 @@ function solution(s) {
             
             if (endPoint) {
                 matchCnt = matchCnt > 1 ? matchCnt : ''
-                compressStr = compressStr + matchCnt + '' + before
+                compressStr += `${matchCnt}${before}`
             }
         }
         
-        answer = answer === 0 ? compressStr.length : answer > compressStr.length ? compressStr.length : answer 
+        answer = answer > compressStr.length ? compressStr.length : answer
     } 
     
-    return s.length === 1 ? 1 : answer;
+    return answer;
 }
